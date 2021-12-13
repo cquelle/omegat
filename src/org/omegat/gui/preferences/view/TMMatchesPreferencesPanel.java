@@ -57,11 +57,15 @@ public class TMMatchesPreferencesPanel extends JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        sortInButtonGroup = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         sortMatchesLabel = new javax.swing.JLabel();
         sortMatchesList = new javax.swing.JComboBox<>();
         fuzzyThresholdLabel = new javax.swing.JLabel();
         fuzzyMatchThreshold = new javax.swing.JSpinner();
+        sortInLabel = new javax.swing.JLabel();
+        ascendingRadioButton = new javax.swing.JRadioButton();
+        descendingRadioButton = new javax.swing.JRadioButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         jPanel7 = new javax.swing.JPanel();
         tagHandlingLabel = new javax.swing.JLabel();
@@ -106,7 +110,7 @@ public class TMMatchesPreferencesPanel extends JPanel {
         org.openide.awt.Mnemonics.setLocalizedText(fuzzyThresholdLabel, OStrings.getString("EXT_TMX_FUZZY_THRESHOLD_KEY")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
@@ -115,10 +119,35 @@ public class TMMatchesPreferencesPanel extends JPanel {
         fuzzyMatchThreshold.setModel(new javax.swing.SpinnerNumberModel(100, 0, 100, 5));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         jPanel1.add(fuzzyMatchThreshold, gridBagConstraints);
+
+        org.openide.awt.Mnemonics.setLocalizedText(sortInLabel, OStrings.getString("EXT_TMX_SORT_IN_KEY")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel1.add(sortInLabel, gridBagConstraints);
+
+        sortInButtonGroup.add(ascendingRadioButton);
+        ascendingRadioButton.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(ascendingRadioButton, OStrings.getString("EXT_TMX_SORT_IN_OPTION_ASCENDING")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel1.add(ascendingRadioButton, gridBagConstraints);
+
+        sortInButtonGroup.add(descendingRadioButton);
+        org.openide.awt.Mnemonics.setLocalizedText(descendingRadioButton, OStrings.getString("EXT_TMX_SORT_IN_OPTION_DESCENDING")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel1.add(descendingRadioButton, gridBagConstraints);
 
         add(jPanel1);
         add(filler2);
@@ -192,6 +221,8 @@ public class TMMatchesPreferencesPanel extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JRadioButton ascendingRadioButton;
+    javax.swing.JRadioButton descendingRadioButton;
     javax.swing.JCheckBox displayLevel2Tags;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
@@ -211,6 +242,8 @@ public class TMMatchesPreferencesPanel extends JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     javax.swing.JCheckBox keepForeignMatches;
     javax.swing.JTextArea matchesTemplate;
+    javax.swing.ButtonGroup sortInButtonGroup;
+    private javax.swing.JLabel sortInLabel;
     private javax.swing.JLabel sortMatchesLabel;
     javax.swing.JComboBox<SORT_KEY> sortMatchesList;
     private javax.swing.JLabel tagHandlingLabel;

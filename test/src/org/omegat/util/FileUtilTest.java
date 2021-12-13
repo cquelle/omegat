@@ -31,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -528,5 +529,46 @@ public class FileUtilTest {
         // Non-path
         assertEquals(Arrays.asList("My Awesome Glossary"),
                 FileUtil.getUniqueNames(Arrays.asList("My Awesome Glossary")));
+    }
+
+    @Test
+    public void testTmFileComparator() throws Exception {
+        String autoPrefix = OConsts.AUTO_TM + "/";
+        String enforcePrefix = OConsts.AUTO_ENFORCE_TM + "/";
+        File base = Files.createTempDirectory("omegat").toFile();
+        FileUtil.TmFileComparator comparator = new FileUtil.TmFileComparator(base);
+        TestPreferencesInitializer.init();
+
+        // Ascending order set
+        Preferences.setPreference(Preferences.EXT_TMX_SORT_IN_OPTION_ASCENDING, true);
+        Preferences.setPreference(Preferences.EXT_TMX_SORT_IN_OPTION_DESCENDING, false);
+        
+        // Same prefix
+        assertEquals(comparator.compare(base.getAbsolutePath() + '/' + autoPrefix + "file1", 
+                base.getAbsolutePath() + '/' + autoPrefix + "file2"), -1);
+        assertEquals(comparator.compare(base.getAbsolutePath() + '/' + autoPrefix + "file2", 
+                base.getAbsolutePath() + '/' + autoPrefix + "file1"), 1);
+
+        // Different prefix
+        assertEquals(comparator.compare(base.getAbsolutePath() + '/' + enforcePrefix + "file1", 
+                base.getAbsolutePath() + '/' + autoPrefix + "file2"), -1);
+        assertEquals(comparator.compare(base.getAbsolutePath() + '/' + enforcePrefix + "file2", 
+                base.getAbsolutePath() + '/' + autoPrefix + "file1"), -1);
+
+        // Descending order set
+        Preferences.setPreference(Preferences.EXT_TMX_SORT_IN_OPTION_ASCENDING, false);
+        Preferences.setPreference(Preferences.EXT_TMX_SORT_IN_OPTION_DESCENDING, true);
+
+        // Same prefix descending
+        assertEquals(comparator.compare(base.getAbsolutePath() + '/' + autoPrefix + "file1", 
+                base.getAbsolutePath() + '/' + autoPrefix + "file2"), 1);
+        assertEquals(comparator.compare(base.getAbsolutePath() + '/' + autoPrefix + "file2", 
+                base.getAbsolutePath() + '/' + autoPrefix + "file1"), -1);
+
+        // Different prefix descending
+        assertEquals(comparator.compare(base.getAbsolutePath() + '/' + enforcePrefix + "file1", 
+                base.getAbsolutePath() + '/' + autoPrefix + "file2"), -1);
+        assertEquals(comparator.compare(base.getAbsolutePath() + '/' + enforcePrefix + "file2", 
+                base.getAbsolutePath() + '/' + autoPrefix + "file1"), -1);
     }
 }

@@ -101,6 +101,10 @@ public class TMMatchesPreferencesController extends BasePreferencesController {
         panel.matchesTemplate.setCaretPosition(0);
         panel.fuzzyMatchThreshold.setValue(Preferences.getPreferenceDefault(Preferences.EXT_TMX_FUZZY_MATCH_THRESHOLD,
                 OConsts.FUZZY_MATCH_THRESHOLD));
+
+        panel.ascendingRadioButton.setSelected(Preferences.isPreferenceDefault(Preferences.EXT_TMX_SORT_IN_OPTION_ASCENDING,
+                Preferences.EXT_TMX_SORT_IN_OPTION_ASCENDING_DEFAULT));
+        panel.descendingRadioButton.setSelected(Preferences.isPreference(Preferences.EXT_TMX_SORT_IN_OPTION_DESCENDING));
     }
 
     @Override
@@ -114,6 +118,9 @@ public class TMMatchesPreferencesController extends BasePreferencesController {
         panel.matchesTemplate.setText(MatchesVarExpansion.DEFAULT_TEMPLATE);
         panel.matchesTemplate.setCaretPosition(0);
         panel.fuzzyMatchThreshold.setValue(OConsts.FUZZY_MATCH_THRESHOLD);
+
+        panel.ascendingRadioButton.setSelected(Preferences.EXT_TMX_SORT_IN_OPTION_ASCENDING_DEFAULT);
+        panel.descendingRadioButton.setSelected(false);
     }
 
     @Override
@@ -129,5 +136,11 @@ public class TMMatchesPreferencesController extends BasePreferencesController {
         Preferences.setPreference(Preferences.EXT_TMX_KEEP_FOREIGN_MATCH, panel.keepForeignMatches.isSelected());
         Preferences.setPreference(Preferences.PENALTY_FOR_FOREIGN_MATCHES, panel.foreignPenaltySpinner.getValue());
         Preferences.setPreference(Preferences.EXT_TMX_FUZZY_MATCH_THRESHOLD, panel.fuzzyMatchThreshold.getValue());
+        
+        if (Preferences.isPreference(Preferences.EXT_TMX_SORT_IN_OPTION_ASCENDING) != panel.ascendingRadioButton.isSelected()) {
+            this.setReloadRequired(true);
+        }
+        Preferences.setPreference(Preferences.EXT_TMX_SORT_IN_OPTION_ASCENDING, panel.ascendingRadioButton.isSelected());
+        Preferences.setPreference(Preferences.EXT_TMX_SORT_IN_OPTION_DESCENDING, panel.descendingRadioButton.isSelected());
     }
 }

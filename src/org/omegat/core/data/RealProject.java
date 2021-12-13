@@ -1270,7 +1270,7 @@ public class RealProject implements IProject {
      * Locates and loads external TMX files with legacy translations. Uses directory monitor for check file
      * updates.
      */
-    private void loadTM()  {
+    private void loadTM() throws IOException {
         File tmRoot = new File(config.getTMRoot());
         tmMonitor = new DirectoryMonitor(tmRoot, file -> {
             if (!ExternalTMFactory.isSupported(file)) {
@@ -1288,16 +1288,6 @@ public class RealProject implements IProject {
                 try {
                     ExternalTMX newTMX = ExternalTMFactory.load(file);
                     newTransMemories.put(file.getPath(), newTMX);
-
-                    // Please note the use of "/". FileUtil.computeRelativePath rewrites all other
-                    // directory separators into "/".
-                    if (FileUtil.computeRelativePath(tmRoot, file).startsWith(OConsts.AUTO_TM + "/")) {
-                        appendFromAutoTMX(newTMX, false);
-                    } else if (FileUtil.computeRelativePath(tmRoot, file)
-                            .startsWith(OConsts.AUTO_ENFORCE_TM + '/')) {
-                        appendFromAutoTMX(newTMX, true);
-                    }
-
                 } catch (Exception e) {
                     String filename = file.getPath();
                     Log.logErrorRB(e, "TF_TM_LOAD_ERROR", filename);
@@ -1309,6 +1299,16 @@ public class RealProject implements IProject {
             transMemories = newTransMemories;
         });
         tmMonitor.checkChanges();
+        for (Map.Entry<String, ExternalTMX> memory : transMemories.entrySet()) {
+            // Please note the use of "/". FileUtil.computeRelativePath rewrites all other
+            // directory separators into "/".
+            if (FileUtil.computeRelativePath(tmRoot.getPath(), memory.getKey()).startsWith(OConsts.AUTO_TM + "/")) {
+                appendFromAutoTMX(memory.getValue(), false);
+            } else if (FileUtil.computeRelativePath(tmRoot.getPath(), memory.getKey())
+                    .startsWith(OConsts.AUTO_ENFORCE_TM + '/')) {
+                appendFromAutoTMX(memory.getValue(), true);
+            }
+        }
         tmMonitor.start();
     }
 

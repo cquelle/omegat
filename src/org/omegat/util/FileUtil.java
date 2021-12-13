@@ -267,21 +267,33 @@ public final class FileUtil {
      * @return
      */
     public static String computeRelativePath(File rootDir, File file) throws IOException {
-        String rootAbs = rootDir.getAbsolutePath().replace('\\', '/') + '/';
-        String fileAbs = file.getAbsolutePath().replace('\\', '/');
+        return computeRelativePath(rootDir.getAbsolutePath(), file.getAbsolutePath());
+    }
 
+    /**
+     * Compute relative path of file.
+     *
+     * @param rootPath
+     *            root directory
+     * @param filePath
+     *            file
+     * @return
+     */
+    public static String computeRelativePath(String rootPath, String filePath) throws IOException {
+        String rootAbs = rootPath.replace('\\', '/') + '/';
+        String fileAbs = filePath.replace('\\', '/');
         switch (Platform.getOsType()) {
-        case WIN32:
-        case WIN64:
-            if (!fileAbs.toUpperCase().startsWith(rootAbs.toUpperCase())) {
-                throw new IOException("File '" + file + "' is not under dir '" + rootDir + "'");
-            }
-            break;
-        default:
-            if (!fileAbs.startsWith(rootAbs)) {
-                throw new IOException("File '" + file + "' is not under dir '" + rootDir + "'");
-            }
-            break;
+            case WIN32:
+            case WIN64:
+                if (!fileAbs.toUpperCase().startsWith(rootAbs.toUpperCase())) {
+                    throw new IOException("File '" + fileAbs + "' is not under dir '" + rootPath + "'");
+                }
+                break;
+            default:
+                if (!fileAbs.startsWith(rootAbs)) {
+                    throw new IOException("File '" + fileAbs + "' is not under dir '" + rootPath + "'");
+                }
+                break;
         }
         return fileAbs.substring(rootAbs.length());
     }
@@ -586,21 +598,29 @@ public final class FileUtil {
             }
             int c;
             if (r1.startsWith(ENFORCE_PREFIX) && r2.startsWith(ENFORCE_PREFIX)) {
-                c = n1.compareTo(n2);
+                c = compareFilenames(n1, n2);
             } else if (r1.startsWith(ENFORCE_PREFIX)) {
                 c = -1;
             } else if (r2.startsWith(ENFORCE_PREFIX)) {
                 c = 1;
             } else if (r1.startsWith(AUTO_PREFIX) && r2.startsWith(AUTO_PREFIX)) {
-                c = n1.compareTo(n2);
+                c = compareFilenames(n1, n2);
             } else if (r1.startsWith(AUTO_PREFIX)) {
                 c = -1;
             } else if (r2.startsWith(AUTO_PREFIX)) {
                 c = 1;
             } else {
-                c = n1.compareTo(n2);
+                c = compareFilenames(n1, n2);
             }
             return c;
+        }
+
+        private static int compareFilenames(String n1, String n2){
+            int result = n1.compareTo(n2);
+            if(Preferences.isPreference(Preferences.EXT_TMX_SORT_IN_OPTION_DESCENDING)) {
+                result = -result;
+            }
+            return result;
         }
     }
 }

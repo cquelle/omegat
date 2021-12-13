@@ -359,6 +359,13 @@ public final class Preferences {
     public static final String EXT_TMX_MATCH_TEMPLATE = "ext_tmx_match_template";
     /** External TMX options: Fuzzy match sort key **/
     public static final String EXT_TMX_SORT_KEY = "ext_tmx_sort_key";
+    /** External TMX options: Fuzzy match sort order **/
+    public static final String EXT_TMX_SORT_IN_KEY = "ext_tmx_sort_in_key";
+    /** External TMX options: Fuzzy match sort order ascending **/
+    public static final String EXT_TMX_SORT_IN_OPTION_ASCENDING = "ext_tmx_sort_in_option_ascending";
+    public static final boolean EXT_TMX_SORT_IN_OPTION_ASCENDING_DEFAULT = true;
+    /** External TMX options: Fuzzy match sort order descending **/
+    public static final String EXT_TMX_SORT_IN_OPTION_DESCENDING = "ext_tmx_sort_in_option_descending";
     /** External TMX options: Whether to show fuzzy matches from foreign (non-target language) matches. */
     public static final String EXT_TMX_KEEP_FOREIGN_MATCH = "keep_foreign_matches";
     /** External TMX options: Fuzzy Threshold **/
